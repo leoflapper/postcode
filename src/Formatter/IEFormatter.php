@@ -7,35 +7,26 @@ namespace Brick\Postcode\Formatter;
 use Brick\Postcode\CountryPostcodeFormatter;
 
 /**
- * Validates and formats the postcodes in the Republic of Ireland.
+ * Validates and formats the postcodes (Eircode) in the Republic of Ireland.
  *
- * Postcodes can have six different formats:
+ * An Eircode is a unique 7-character code consisting of letters and numbers.
+ * An Eircode consists of a 3-character routing key to identify the area
+ * and a 4-character unique identifier for each address.
  *
- * - ANN ANAN
- * - ANN AANN
- * - ANN ANAA
- * - ANW ANAN
- * - ANW AANN
- * - ANW ANAA
+ * Examples
+ *  - A65 F4E2
+ *  - W23 F854
  *
- * A stands for a capital letter, N stands for a digit, W is the letter W.
- *
- * @see https://en.wikipedia.org/wiki/List_of_postal_codes
- * @see https://en.wikipedia.org/wiki/Postal_addresses_in_the_Republic_of_Ireland
+ * @see https://www.citizensinformation.ie/en/consumer_affairs/telecommunications_and_postal_services/eircode.html
  */
 class IEFormatter implements CountryPostcodeFormatter
 {
+
     /**
-     * The regular expression pattern used to validate the postcode and extract the two parts.
+     * The regular expression pattern used to validate the postcode.
+     * @see https://stackoverflow.com/questions/33391412/validation-for-irish-eircode/33408964#33408964
      */
-    private const PATTERN = '/^'
-    . '([A-Z][0-9][0-9W])'
-    . '('
-    . '(?:[A-Z][0-9][A-Z][0-9])|'
-    . '(?:[A-Z][A-Z][0-9][0-9])|'
-    . '(?:[A-Z][0-9][A-Z][A-Z])'
-    . ')'
-    . '$/';
+    private const PATTERN = '/(?:^[AC-FHKNPRTV-Y][0-9]{2}|D6W)[ -]?[0-9AC-FHKNPRTV-Y]{4}$/';
 
     /**
      * {@inheritdoc}
@@ -46,6 +37,6 @@ class IEFormatter implements CountryPostcodeFormatter
             return null;
         }
 
-        return $matches[1] . ' ' . $matches[2];
+        return $postcode;
     }
 }
